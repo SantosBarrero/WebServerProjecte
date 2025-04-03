@@ -1,0 +1,61 @@
+﻿@model WebServiceProjecte.Models.Encarrec
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Encarrec</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EncarrecId" class="control-label"></label>
+                <input asp-for="EncarrecId" class="form-control" />
+                <span asp-validation-for="EncarrecId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreuTotal" class="control-label"></label>
+                <input asp-for="PreuTotal" class="form-control" />
+                <span asp-validation-for="PreuTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Data" class="control-label"></label>
+                <input asp-for="Data" class="form-control" />
+                <span asp-validation-for="Data" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Pagat" /> @Html.DisplayNameFor(model => model.Pagat)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Estat" class="control-label"></label>
+                <input asp-for="Estat" class="form-control" />
+                <span asp-validation-for="Estat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SucurrsalId" class="control-label"></label>
+                <select asp-for="SucurrsalId" class ="form-control" asp-items="ViewBag.SucurrsalId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuId" class="control-label"></label>
+                <select asp-for="UsuId" class ="form-control" asp-items="ViewBag.UsuId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

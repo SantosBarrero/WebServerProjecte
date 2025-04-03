@@ -1,0 +1,59 @@
+﻿@model WebServiceProjecte.Models.Usuari
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Usuari</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UsuId" />
+            <div class="form-group">
+                <label asp-for="NomUsuari" class="control-label"></label>
+                <input asp-for="NomUsuari" class="form-control" />
+                <span asp-validation-for="NomUsuari" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correu" class="control-label"></label>
+                <input asp-for="Correu" class="form-control" />
+                <span asp-validation-for="Correu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contrasenya" class="control-label"></label>
+                <input asp-for="Contrasenya" class="form-control" />
+                <span asp-validation-for="Contrasenya" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rol" class="control-label"></label>
+                <input asp-for="Rol" class="form-control" />
+                <span asp-validation-for="Rol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SucurrsalId" class="control-label"></label>
+                <select asp-for="SucurrsalId" class="form-control" asp-items="ViewBag.SucurrsalId"></select>
+                <span asp-validation-for="SucurrsalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ComerçId" class="control-label"></label>
+                <select asp-for="ComerçId" class="form-control" asp-items="ViewBag.ComerçId"></select>
+                <span asp-validation-for="ComerçId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
