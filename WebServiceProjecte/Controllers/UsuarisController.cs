@@ -18,147 +18,71 @@ namespace WebServiceProjecte.Controllers
             _context = context;
         }
 
-        // GET: Usuaris
-        public async Task<IActionResult> Index()
+        // GET: api/Usuaris
+        [Route("api/Usuaris")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Usuari>>> GetUsus()
         {
-            var gestióComerçContext = _context.Usuaris.Include(u => u.Comerç).Include(u => u.Sucurrsal);
-            return View(await gestióComerçContext.ToListAsync());
+            return await _context.Usuaris.OrderBy(x => x.NomUsuari).ToListAsync();
         }
 
-        // GET: Usuaris/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuari = await _context.Usuaris
-                .Include(u => u.Comerç)
-                .Include(u => u.Sucurrsal)
-                .FirstOrDefaultAsync(m => m.UsuId == id);
-            if (usuari == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuari);
-        }
-
-        // GET: Usuaris/Create
-        public IActionResult Create()
-        {
-            ViewData["ComerçId"] = new SelectList(_context.Comerçs, "ComerçId", "ComerçId");
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId");
-            return View();
-        }
-
-        // POST: Usuaris/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuId,NomUsuari,Correu,Contrasenya,Rol,SucurrsalId,ComerçId")] Usuari usuari)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(usuari);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ComerçId"] = new SelectList(_context.Comerçs, "ComerçId", "ComerçId", usuari.ComerçId);
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", usuari.SucurrsalId);
-            return View(usuari);
-        }
-
-        // GET: Usuaris/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuari = await _context.Usuaris.FindAsync(id);
-            if (usuari == null)
-            {
-                return NotFound();
-            }
-            ViewData["ComerçId"] = new SelectList(_context.Comerçs, "ComerçId", "ComerçId", usuari.ComerçId);
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", usuari.SucurrsalId);
-            return View(usuari);
-        }
-
-        // POST: Usuaris/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuId,NomUsuari,Correu,Contrasenya,Rol,SucurrsalId,ComerçId")] Usuari usuari)
+        // PUT: api/Usuaris/5
+        [Route("api/Usuaris/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> PutUsuari(int id, Usuari usuari)
         {
             if (id != usuari.UsuId)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(usuari).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(usuari);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuariExists(usuari.UsuId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            ViewData["ComerçId"] = new SelectList(_context.Comerçs, "ComerçId", "ComerçId", usuari.ComerçId);
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", usuari.SucurrsalId);
-            return View(usuari);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuariExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Usuaris/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Usuaris
+        [Route("api/Usuaris")]
+        [HttpPost]
+        public async Task<ActionResult<Usuari>> PostUsuari(Usuari usuari)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            _context.Usuaris.Add(usuari);
+            await _context.SaveChangesAsync();
 
-            var usuari = await _context.Usuaris
-                .Include(u => u.Comerç)
-                .Include(u => u.Sucurrsal)
-                .FirstOrDefaultAsync(m => m.UsuId == id);
+            return CreatedAtAction(nameof(GetUsus), new { id = usuari.UsuId }, usuari);
+        }
+
+        // DELETE: api/Usuaris/5
+        [Route("api/Usuaris/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUsuari(int id)
+        {
+            var usuari = await _context.Usuaris.FindAsync(id);
             if (usuari == null)
             {
                 return NotFound();
             }
 
-            return View(usuari);
-        }
-
-        // POST: Usuaris/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var usuari = await _context.Usuaris.FindAsync(id);
-            if (usuari != null)
-            {
-                _context.Usuaris.Remove(usuari);
-            }
-
+            _context.Usuaris.Remove(usuari);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool UsuariExists(int id)

@@ -18,147 +18,71 @@ namespace WebServiceProjecte.Controllers
             _context = context;
         }
 
-        // GET: Encarrecs
-        public async Task<IActionResult> Index()
+        // GET: api/Encarrecs
+        [Route("api/Encarrecs")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Encarrec>>> GetEncarrecs()
         {
-            var gestióComerçContext = _context.Encarrecs.Include(e => e.Sucurrsal).Include(e => e.Usu);
-            return View(await gestióComerçContext.ToListAsync());
+            return await _context.Encarrecs.OrderBy(x => x.EncarrecId).ToListAsync();
         }
 
-        // GET: Encarrecs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // PUT: api/Encarrecs/5
+        [Route("api/Encarrecs/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> PutEncarrecs(int id, Encarrec e)
         {
-            if (id == null)
+            if (id != e.EncarrecId)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            var encarrec = await _context.Encarrecs
-                .Include(e => e.Sucurrsal)
-                .Include(e => e.Usu)
-                .FirstOrDefaultAsync(m => m.EncarrecId == id);
-            if (encarrec == null)
+            _context.Entry(e).State = EntityState.Modified;
+
+            try
             {
-                return NotFound();
-            }
-
-            return View(encarrec);
-        }
-
-        // GET: Encarrecs/Create
-        public IActionResult Create()
-        {
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId");
-            ViewData["UsuId"] = new SelectList(_context.Usuaris, "UsuId", "UsuId");
-            return View();
-        }
-
-        // POST: Encarrecs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EncarrecId,PreuTotal,Data,Pagat,Estat,SucurrsalId,UsuId")] Encarrec encarrec)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(encarrec);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", encarrec.SucurrsalId);
-            ViewData["UsuId"] = new SelectList(_context.Usuaris, "UsuId", "UsuId", encarrec.UsuId);
-            return View(encarrec);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EncarrecExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Encarrecs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var encarrec = await _context.Encarrecs.FindAsync(id);
-            if (encarrec == null)
-            {
-                return NotFound();
-            }
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", encarrec.SucurrsalId);
-            ViewData["UsuId"] = new SelectList(_context.Usuaris, "UsuId", "UsuId", encarrec.UsuId);
-            return View(encarrec);
-        }
-
-        // POST: Encarrecs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: api/Encarrecs
+        [Route("api/Encarrecs")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EncarrecId,PreuTotal,Data,Pagat,Estat,SucurrsalId,UsuId")] Encarrec encarrec)
+        public async Task<ActionResult<Usuari>> PostEncarrec(Encarrec e)
         {
-            if (id != encarrec.EncarrecId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(encarrec);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EncarrecExists(encarrec.EncarrecId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SucurrsalId"] = new SelectList(_context.Sucurrsals, "SucurrsalId", "SucurrsalId", encarrec.SucurrsalId);
-            ViewData["UsuId"] = new SelectList(_context.Usuaris, "UsuId", "UsuId", encarrec.UsuId);
-            return View(encarrec);
-        }
-
-        // GET: Encarrecs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var encarrec = await _context.Encarrecs
-                .Include(e => e.Sucurrsal)
-                .Include(e => e.Usu)
-                .FirstOrDefaultAsync(m => m.EncarrecId == id);
-            if (encarrec == null)
-            {
-                return NotFound();
-            }
-
-            return View(encarrec);
-        }
-
-        // POST: Encarrecs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var encarrec = await _context.Encarrecs.FindAsync(id);
-            if (encarrec != null)
-            {
-                _context.Encarrecs.Remove(encarrec);
-            }
-
+            _context.Encarrecs.Add(e);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return CreatedAtAction(nameof(GetEncarrecs), new { id = e.EncarrecId }, e);
+        }
+
+        // DELETE: api/Encarrecs/5
+        [Route("api/Encarrecs/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteEncarrec(int id)
+        {
+            var e = await _context.Encarrecs.FindAsync(id);
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            _context.Encarrecs.Remove(e);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         private bool EncarrecExists(int id)

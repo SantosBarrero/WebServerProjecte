@@ -18,134 +18,71 @@ namespace WebServiceProjecte.Controllers
             _context = context;
         }
 
-        // GET: Comerç
-        public async Task<IActionResult> Index()
+        // GET: api/Comerç
+        [Route("api/Comerç")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Comerç>>> GetComerços()
         {
-            return View(await _context.Comerçs.ToListAsync());
+            return await _context.Comerçs.OrderBy(x => x.Nom).ToListAsync();
         }
 
-        // GET: Comerç/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // PUT: api/Comerç/5
+        [Route("api/Comerç/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> PutComerç(int id, Comerç c)
         {
-            if (id == null)
+            if (id != c.ComerçId)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            var comerç = await _context.Comerçs
-                .FirstOrDefaultAsync(m => m.ComerçId == id);
-            if (comerç == null)
+            _context.Entry(c).State = EntityState.Modified;
+
+            try
             {
-                return NotFound();
-            }
-
-            return View(comerç);
-        }
-
-        // GET: Comerç/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Comerç/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComerçId,Nom,Telefon,Email,Nif")] Comerç comerç)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(comerç);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(comerç);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ComerçExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Comerç/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comerç = await _context.Comerçs.FindAsync(id);
-            if (comerç == null)
-            {
-                return NotFound();
-            }
-            return View(comerç);
-        }
-
-        // POST: Comerç/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: api/Comerç
+        [Route("api/Comerç")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ComerçId,Nom,Telefon,Email,Nif")] Comerç comerç)
+        public async Task<ActionResult<Comerç>> PostUsuari(Comerç c)
         {
-            if (id != comerç.ComerçId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(comerç);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ComerçExists(comerç.ComerçId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(comerç);
-        }
-
-        // GET: Comerç/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comerç = await _context.Comerçs
-                .FirstOrDefaultAsync(m => m.ComerçId == id);
-            if (comerç == null)
-            {
-                return NotFound();
-            }
-
-            return View(comerç);
-        }
-
-        // POST: Comerç/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var comerç = await _context.Comerçs.FindAsync(id);
-            if (comerç != null)
-            {
-                _context.Comerçs.Remove(comerç);
-            }
-
+            _context.Comerçs.Add(c);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return CreatedAtAction(nameof(GetComerços), new { id = c.ComerçId }, c);
+        }
+
+        // DELETE: api/Comerç/5
+        [Route("api/Comerç/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteComerç(int id)
+        {
+            var c = await _context.Comerçs.FindAsync(id);
+            if (c == null)
+            {
+                return NotFound();
+            }
+
+            _context.Comerçs.Remove(c);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         private bool ComerçExists(int id)
