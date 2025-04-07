@@ -26,6 +26,13 @@ namespace WebServiceProjecte.Controllers
             return await _context.Comerçs.OrderBy(x => x.Nom).ToListAsync();
         }
 
+        // GET: api/Comerç/5
+        [Route("api/Comerç/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Comerç?>> GetComerç(int id)
+        {
+            return await _context.Comerçs.Where(x => x.ComerçId == id).FirstOrDefaultAsync();
+        }
         // PUT: api/Comerç/5
         [Route("api/Comerç/{id}")]
         [HttpPut]
