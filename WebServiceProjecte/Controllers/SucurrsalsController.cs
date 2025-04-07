@@ -26,6 +26,14 @@ namespace WebServiceProjecte.Controllers
             return await _context.Sucurrsals.OrderBy(x => x.SucurrsalId).ToListAsync();
         }
 
+        // GET: api/Sucurrsals/5
+        [Route("api/Sucurrsals/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Sucurrsal?>> GetSucursal(int id)
+        {
+            return await _context.Sucurrsals.Where(x => x.SucurrsalId == id).FirstOrDefaultAsync();
+        }
+
         // PUT: api/Sucurrsals/5
         [Route("api/Sucurrsals/{id}")]
         [HttpPut]

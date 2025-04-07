@@ -26,6 +26,14 @@ namespace WebServiceProjecte.Controllers
             return await _context.Encarrecs.OrderBy(x => x.EncarrecId).ToListAsync();
         }
 
+        // GET: api/Encarrecs/5
+        [Route("api/Encarrecs/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Encarrec?>> GetEncarrec(int id)
+        {
+            return await _context.Encarrecs.Where(x => x.EncarrecId == id).FirstOrDefaultAsync();
+        }
+
         // PUT: api/Encarrecs/5
         [Route("api/Encarrecs/{id}")]
         [HttpPut]

@@ -25,6 +25,13 @@ namespace WebServiceProjecte.Controllers
         {
             return await _context.Usuaris.OrderBy(x => x.NomUsuari).ToListAsync();
         }
+        // GET: api/Usuaris/5
+        [Route("api/Usuaris/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<Usuari?>> GetUsuari(int id)
+        {
+            return await _context.Usuaris.Where(x=>x.UsuId == id).FirstOrDefaultAsync();
+        }
 
         // PUT: api/Usuaris/5
         [Route("api/Usuaris/{id}")]
