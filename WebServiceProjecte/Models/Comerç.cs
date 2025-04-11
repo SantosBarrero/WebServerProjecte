@@ -15,7 +15,7 @@ public partial class Comerç
 
     public string? Nif { get; set; }
 
-    public virtual ICollection<Sucurrsal> Sucurrsals { get; set; } = new List<Sucurrsal>();
+    public virtual ICollection<Sucursal> Sucursals { get; set; } = new List<Sucursal>();
 
     public virtual ICollection<Usuari> Usuaris { get; set; } = new List<Usuari>();
 }

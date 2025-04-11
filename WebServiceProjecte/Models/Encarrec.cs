@@ -15,11 +15,11 @@ public partial class Encarrec
 
     public string? Estat { get; set; }
 
-    public int? SucurrsalId { get; set; }
+    public int? SucursalId { get; set; }    
 
     public int? UsuId { get; set; }
 
-    public virtual Sucurrsal? Sucurrsal { get; set; }
+    public virtual Sucursal? Sucursal { get; set; }
 
     public virtual Usuari? Usu { get; set; }
 

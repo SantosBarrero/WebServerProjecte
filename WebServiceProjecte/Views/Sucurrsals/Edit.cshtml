@@ -1,4 +1,8 @@
-﻿@model WebServiceProjecte.Models.Sucurrsal
+﻿@model WebServiceProjecte.Models.Sucursal
+
+
+
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,13 +10,13 @@
 
 <h1>Edit</h1>
 
-<h4>Sucurrsal</h4>
+<h4>Sucursal</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SucurrsalId" />
+            <input type="hidden" asp-for="SucursalId" />
             <div class="form-group">
                 <label asp-for="Direccio" class="control-label"></label>
                 <input asp-for="Direccio" class="form-control" />

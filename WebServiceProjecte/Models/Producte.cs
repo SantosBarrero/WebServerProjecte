@@ -19,5 +19,5 @@ public partial class Producte
 
     public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
 
-    public virtual ICollection<Sucurrsal> Sucurrsals { get; set; } = new List<Sucurrsal>();
+    public virtual ICollection<Sucursal> Sucursals { get; set; } = new List<Sucursal>();
 }

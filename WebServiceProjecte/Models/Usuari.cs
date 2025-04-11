@@ -15,7 +15,7 @@ public partial class Usuari
 
     public string? Rol { get; set; }
 
-    public int? SucurrsalId { get; set; }
+    public int? SucursalId { get; set; }
 
     public int? ComerçId { get; set; }
 
@@ -23,5 +23,6 @@ public partial class Usuari
 
     public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
 
-    public virtual Sucurrsal? Sucurrsal { get; set; }
+    public virtual Sucursal? Sucursal{ get; set; }
+    
 }

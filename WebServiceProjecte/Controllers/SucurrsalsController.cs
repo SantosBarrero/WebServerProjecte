@@ -9,37 +9,37 @@ using WebServiceProjecte.Models;
 
 namespace WebServiceProjecte.Controllers
 {
-    public class SucurrsalsController : Controller
+    public class SucursalsController : Controller
     {
         private readonly GestióComerçContext _context;
 
-        public SucurrsalsController(GestióComerçContext context)
+        public SucursalsController(GestióComerçContext context)
         {
             _context = context;
         }
 
-        // GET: api/Sucurrsals
-        [Route("api/Sucurrsals")]
+        // GET: api/Sucursals
+        [Route("api/Sucursals")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sucurrsal>>> GetSucur()
+        public async Task<ActionResult<IEnumerable<Sucursal>>> GetSucur()
         {
-            return await _context.Sucurrsals.OrderBy(x => x.SucurrsalId).ToListAsync();
+            return await _context.Sucursals.OrderBy(x => x.SucursalId).ToListAsync();
         }
 
-        // GET: api/Sucurrsals/5
-        [Route("api/Sucurrsals/{id}")]
+        // GET: api/Sucursals/5
+        [Route("api/Sucursals/{id}")]
         [HttpGet]
-        public async Task<ActionResult<Sucurrsal?>> GetSucursal(int id)
+        public async Task<ActionResult<Sucursal?>> GetSucursal(int id)
         {
-            return await _context.Sucurrsals.Where(x => x.SucurrsalId == id).FirstOrDefaultAsync();
+            return await _context.Sucursals.Where(x => x.SucursalId == id).FirstOrDefaultAsync();
         }
 
-        // PUT: api/Sucurrsals/5
-        [Route("api/Sucurrsals/{id}")]
+        // PUT: api/Sucursals/5
+        [Route("api/Sucursals/{id}")]
         [HttpPut]
-        public async Task<IActionResult> PutSucurrsal(int id, Sucurrsal s)
+        public async Task<IActionResult> PutSucursal(int id, Sucursal s)
         {
-            if (id != s.SucurrsalId)
+            if (id != s.SucursalId)
             {
                 return BadRequest();
             }
@@ -52,7 +52,7 @@ namespace WebServiceProjecte.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SucurrsalExists(id))
+                if (!SucursalExists(id))
                 {
                     return NotFound();
                 }
@@ -65,37 +65,37 @@ namespace WebServiceProjecte.Controllers
             return NoContent();
         }
 
-        // POST: api/Sucurrsals
-        [Route("api/Sucurrsals")]
+        // POST: api/Sucursals
+        [Route("api/Sucursals")]
         [HttpPost]
-        public async Task<ActionResult<Usuari>> PostSucurrsal(Sucurrsal s)
+        public async Task<ActionResult<Usuari>> PostSucursal(Sucursal s)
         {
-            _context.Sucurrsals.Add(s);
+            _context.Sucursals.Add(s);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetSucur), new { id = s.SucurrsalId }, s);
+            return CreatedAtAction(nameof(GetSucur), new { id = s.SucursalId }, s);
         }
 
-        // DELETE: api/Sucurrsals/5
-        [Route("api/Sucurrsals/{id}")]
+        // DELETE: api/Sucursals/5
+        [Route("api/Sucursals/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUsuari(int id)
         {
-            var s = await _context.Sucurrsals.FindAsync(id);
+            var s = await _context.Sucursals.FindAsync(id);
             if (s == null)
             {
                 return NotFound();
             }
 
-            _context.Sucurrsals.Remove(s);
+            _context.Sucursals.Remove(s);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SucurrsalExists(int id)
+        private bool SucursalExists(int id)
         {
-            return _context.Sucurrsals.Any(e => e.SucurrsalId == id);
+            return _context.Sucursals.Any(e => e.SucursalId == id);
         }
     }
 }

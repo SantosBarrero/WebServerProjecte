@@ -1,4 +1,7 @@
-﻿@model WebServiceProjecte.Models.Sucurrsal
+﻿@model WebServiceProjecte.Models.Sucursal
+
+
+
 
 @{
     ViewData["Title"] = "Create";
@@ -6,16 +9,16 @@
 
 <h1>Create</h1>
 
-<h4>Sucurrsal</h4>
+<h4>Sucursal</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SucurrsalId" class="control-label"></label>
-                <input asp-for="SucurrsalId" class="form-control" />
-                <span asp-validation-for="SucurrsalId" class="text-danger"></span>
+                <label asp-for="SucursalId" class="control-label"></label>
+                <input asp-for="SucursalId" class="form-control" />
+                <span asp-validation-for="SucursalId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Direccio" class="control-label"></label>

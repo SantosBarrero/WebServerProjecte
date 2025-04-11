@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace WebServiceProjecte.Models;
 
-public partial class Sucurrsal
+public partial class Sucursal
 {
-    public int SucurrsalId { get; set; }
+    public int SucursalId { get; set; }
 
     public string? Direccio { get; set; }
 
@@ -16,6 +16,8 @@ public partial class Sucurrsal
     public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
 
     public virtual ICollection<Usuari> Usuaris { get; set; } = new List<Usuari>();
+
+    //public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 
     public virtual ICollection<Producte> CodiDeBarres { get; set; } = new List<Producte>();
 }

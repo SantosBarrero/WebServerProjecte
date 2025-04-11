@@ -21,7 +21,7 @@ public partial class GestióComerçContext : DbContext
 
     public virtual DbSet<Producte> Productes { get; set; }
 
-    public virtual DbSet<Sucurrsal> Sucurrsals { get; set; }
+    public virtual DbSet<Sucursal> Sucursals { get; set; }
 
     public virtual DbSet<Usuari> Usuaris { get; set; }
 
@@ -62,8 +62,8 @@ public partial class GestióComerçContext : DbContext
             entity.Property(e => e.Estat).HasMaxLength(50);
             entity.Property(e => e.PreuTotal).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.Sucurrsal).WithMany(p => p.Encarrecs)
-                .HasForeignKey(d => d.SucurrsalId)
+            entity.HasOne(d => d.Sucursal).WithMany(p => p.Encarrecs)
+                .HasForeignKey(d => d.SucursalId)
                 .HasConstraintName("FK__Encarrec__Sucurr__4316F928");
 
             entity.HasOne(d => d.Usu).WithMany(p => p.Encarrecs)
@@ -114,20 +114,20 @@ public partial class GestióComerçContext : DbContext
                             .IsUnicode(false);
                     });
 
-            entity.HasMany(d => d.Sucurrsals).WithMany(p => p.CodiDeBarres)
+            entity.HasMany(d => d.Sucursals).WithMany(p => p.CodiDeBarres)
                 .UsingEntity<Dictionary<string, object>>(
                     "Stock",
-                    r => r.HasOne<Sucurrsal>().WithMany()
-                        .HasForeignKey("SucurrsalId")
+                    r => r.HasOne<Sucursal>().WithMany()
+                        .HasForeignKey("SucursalId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Stock__Sucurrsal__47DBAE45"),
+                        .HasConstraintName("FK__Stock__Sucursal__47DBAE45"),
                     l => l.HasOne<Producte>().WithMany()
                         .HasForeignKey("CodiDeBarres")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Stock__CodiDeBar__46E78A0C"),
                     j =>
                     {
-                        j.HasKey("CodiDeBarres", "SucurrsalId").HasName("PK__Stock__86D861DEA487BEE1");
+                        j.HasKey("CodiDeBarres", "SucursalId").HasName("PK__Stock__86D861DEA487BEE1");
                         j.ToTable("Stock");
                         j.IndexerProperty<string>("CodiDeBarres")
                             .HasMaxLength(50)
@@ -135,20 +135,20 @@ public partial class GestióComerçContext : DbContext
                     });
         });
 
-        modelBuilder.Entity<Sucurrsal>(entity =>
+        modelBuilder.Entity<Sucursal>(entity =>
         {
-            entity.HasKey(e => e.SucurrsalId).HasName("PK__Sucurrsa__83581AF00CFD3F7E");
+            entity.HasKey(e => e.SucursalId).HasName("PK__Sucurrsa__83581AF00CFD3F7E");
 
-            entity.ToTable("Sucurrsal");
+            entity.ToTable("Sucursal");
 
-            entity.Property(e => e.SucurrsalId).ValueGeneratedNever();
+            entity.Property(e => e.SucursalId).ValueGeneratedNever();
             entity.Property(e => e.Direccio)
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Comerç).WithMany(p => p.Sucurrsals)
+            entity.HasOne(d => d.Comerç).WithMany(p => p.Sucursals)
                 .HasForeignKey(d => d.ComerçId)
-                .HasConstraintName("FK__Sucurrsal__Comer__398D8EEE");
+                .HasConstraintName("FK__Sucursal__Comer__398D8EEE");
         });
 
         modelBuilder.Entity<Usuari>(entity =>
@@ -175,11 +175,10 @@ public partial class GestióComerçContext : DbContext
                 .HasForeignKey(d => d.ComerçId)
                 .HasConstraintName("FK__Usuari__ComerçId__3D5E1FD2");
 
-            entity.HasOne(d => d.Sucurrsal).WithMany(p => p.Usuaris)
-                .HasForeignKey(d => d.SucurrsalId)
+            entity.HasOne(d => d.Sucursal).WithMany(p => p.Usuaris)
+                .HasForeignKey(d => d.SucursalId)
                 .HasConstraintName("FK__Usuari__Sucurrsa__3C69FB99");
         });
-
         OnModelCreatingPartial(modelBuilder);
     }
 

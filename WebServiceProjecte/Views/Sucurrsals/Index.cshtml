@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebServiceProjecte.Models.Sucurrsal>
+﻿@model IEnumerable<WebServiceProjecte.Models.Sucursal>
 
 @{
     ViewData["Title"] = "Index";
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Comerç.ComerçId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SucurrsalId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SucurrsalId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SucurrsalId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.SucursalId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SucursalId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SucursalId">Delete</a>
             </td>
         </tr>
 }
