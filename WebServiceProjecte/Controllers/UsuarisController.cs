@@ -67,8 +67,10 @@ namespace WebServiceProjecte.Controllers
         // POST: api/Usuaris
         [Route("api/Usuaris")]
         [HttpPost]
-        public async Task<ActionResult<Usuari>> PostUsuari(Usuari usuari)
+        public async Task<ActionResult<Usuari>> PostUsuari([FromBody] Usuari usuari)
         {
+            int lastId = _context.Usuaris.Select(a => a.UsuId).OrderByDescending(a => a).FirstOrDefault();
+            usuari.UsuId = lastId + 1;
             _context.Usuaris.Add(usuari);
             await _context.SaveChangesAsync();
 

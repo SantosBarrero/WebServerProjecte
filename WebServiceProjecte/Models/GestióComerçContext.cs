@@ -33,7 +33,7 @@ public partial class GestióComerçContext : DbContext
     {
         modelBuilder.Entity<Comerç>(entity =>
         {
-            entity.HasKey(e => e.ComerçId).HasName("PK__Comerç__7BE1AC41FEA970E5");
+            entity.HasKey(e => e.ComerçId).HasName("PK__Comerç__7BE1AC4169B7E99E");
 
             entity.ToTable("Comerç");
 
@@ -54,7 +54,7 @@ public partial class GestióComerçContext : DbContext
 
         modelBuilder.Entity<Encarrec>(entity =>
         {
-            entity.HasKey(e => e.EncarrecId).HasName("PK__Encarrec__E85CC01F7C84A8E6");
+            entity.HasKey(e => e.EncarrecId).HasName("PK__Encarrec__E85CC01FE450EFBA");
 
             entity.ToTable("Encarrec");
 
@@ -64,7 +64,7 @@ public partial class GestióComerçContext : DbContext
 
             entity.HasOne(d => d.Sucursal).WithMany(p => p.Encarrecs)
                 .HasForeignKey(d => d.SucursalId)
-                .HasConstraintName("FK__Encarrec__Sucurr__4316F928");
+                .HasConstraintName("FK__Encarrec__Sucurs__4316F928");
 
             entity.HasOne(d => d.Usu).WithMany(p => p.Encarrecs)
                 .HasForeignKey(d => d.UsuId)
@@ -73,7 +73,7 @@ public partial class GestióComerçContext : DbContext
 
         modelBuilder.Entity<Producte>(entity =>
         {
-            entity.HasKey(e => e.CodiDeBarres).HasName("PK__Producte__9EEDE071027C44AF");
+            entity.HasKey(e => e.CodiDeBarres).HasName("PK__Producte__9EEDE07129083725");
 
             entity.ToTable("Producte");
 
@@ -107,7 +107,7 @@ public partial class GestióComerçContext : DbContext
                         .HasConstraintName("FK__ProducteE__CodiD__4AB81AF0"),
                     j =>
                     {
-                        j.HasKey("CodiDeBarres", "EncarrecId").HasName("PK__Producte__70682C7000BFF190");
+                        j.HasKey("CodiDeBarres", "EncarrecId").HasName("PK__Producte__70682C70046F06AB");
                         j.ToTable("ProducteEncarrec");
                         j.IndexerProperty<string>("CodiDeBarres")
                             .HasMaxLength(50)
@@ -127,7 +127,7 @@ public partial class GestióComerçContext : DbContext
                         .HasConstraintName("FK__Stock__CodiDeBar__46E78A0C"),
                     j =>
                     {
-                        j.HasKey("CodiDeBarres", "SucursalId").HasName("PK__Stock__86D861DEA487BEE1");
+                        j.HasKey("CodiDeBarres", "SucursalId").HasName("PK__Stock__9826A85F5826F24B");
                         j.ToTable("Stock");
                         j.IndexerProperty<string>("CodiDeBarres")
                             .HasMaxLength(50)
@@ -137,7 +137,7 @@ public partial class GestióComerçContext : DbContext
 
         modelBuilder.Entity<Sucursal>(entity =>
         {
-            entity.HasKey(e => e.SucursalId).HasName("PK__Sucurrsa__83581AF00CFD3F7E");
+            entity.HasKey(e => e.SucursalId).HasName("PK__Sucursal__6CB482E100F027EB");
 
             entity.ToTable("Sucursal");
 
@@ -153,7 +153,7 @@ public partial class GestióComerçContext : DbContext
 
         modelBuilder.Entity<Usuari>(entity =>
         {
-            entity.HasKey(e => e.UsuId).HasName("PK__Usuari__68526383A0BB3996");
+            entity.HasKey(e => e.UsuId).HasName("PK__Usuari__685263830FFAD44D");
 
             entity.ToTable("Usuari");
 
@@ -177,7 +177,7 @@ public partial class GestióComerçContext : DbContext
 
             entity.HasOne(d => d.Sucursal).WithMany(p => p.Usuaris)
                 .HasForeignKey(d => d.SucursalId)
-                .HasConstraintName("FK__Usuari__Sucurrsa__3C69FB99");
+                .HasConstraintName("FK__Usuari__Sucursal__3C69FB99");
         });
         OnModelCreatingPartial(modelBuilder);
     }
