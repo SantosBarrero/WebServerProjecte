@@ -33,6 +33,13 @@ namespace WebServiceProjecte.Controllers
             return await _context.Usuaris.Where(x=>x.UsuId == id).FirstOrDefaultAsync();
         }
 
+        [Route("api/UsuarisCorreu/{correu}")]
+        [HttpGet]
+        public async Task<ActionResult<Usuari?>> GetUsuari(string correu)
+        {
+            return await _context.Usuaris.Where(x => x.Correu == correu || x.NomUsuari == correu).FirstOrDefaultAsync();
+        }
+
         // PUT: api/Usuaris/5
         [Route("api/Usuaris/{id}")]
         [HttpPut]
