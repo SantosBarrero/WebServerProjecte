@@ -70,6 +70,8 @@ namespace WebServiceProjecte.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuari>> PostSucursal(Sucursal s)
         {
+            int lastId = _context.Sucursals.Select(a => a.SucursalId).OrderByDescending(a => a).FirstOrDefault();
+            s.SucursalId = lastId + 1;
             _context.Sucursals.Add(s);
             await _context.SaveChangesAsync();
 
