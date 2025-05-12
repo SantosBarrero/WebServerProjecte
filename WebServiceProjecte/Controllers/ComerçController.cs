@@ -69,6 +69,8 @@ namespace WebServiceProjecte.Controllers
         [HttpPost]
         public async Task<ActionResult<Comerç>> PostUsuari(Comerç c)
         {
+            int lastId = _context.Comerçs.Select(a => a.ComerçId).OrderByDescending(a => a).FirstOrDefault();
+            c.ComerçId = lastId + 1;
             _context.Comerçs.Add(c);
             await _context.SaveChangesAsync();
 

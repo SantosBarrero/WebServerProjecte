@@ -21,5 +21,17 @@ namespace WebServiceProjecte.Controllers
             var sucursal = _context.Sucursals.Where(s => s.SucursalId == id).FirstOrDefault();
             return await _context.Productes.Where(p => p.Sucursals.Contains(sucursal)).ToListAsync();
         }
+
+        [Route("api/Stock/Sucur")]
+        [HttpPost]
+        public async void PutStockSucursal(string codiBarres, int sucurId)
+        {
+            var sucursal = _context.Sucursals.Where(s => s.SucursalId == sucurId).FirstOrDefault();
+            var producte = _context.Productes.Where(p => p.CodiDeBarres == codiBarres).FirstOrDefault();
+            producte.Sucursals.Add(sucursal);
+            _context.Productes.Update(producte);
+            _context.SaveChanges();
+
+        }
     }
 }
