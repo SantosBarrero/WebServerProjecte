@@ -37,7 +37,7 @@ namespace WebServiceProjecte.Controllers
         // PUT: api/Encarrecs/5
         [Route("api/Encarrecs/{id}")]
         [HttpPut]
-        public async Task<IActionResult> PutEncarrecs(int id, Encarrec e)
+        public async Task<IActionResult> PutEncarrecs(int id, [FromBody] Encarrec e)
         {
             if (id != e.EncarrecId)
             {
@@ -68,9 +68,15 @@ namespace WebServiceProjecte.Controllers
         // POST: api/Encarrecs
         [Route("api/Encarrecs")]
         [HttpPost]
-        public async Task<ActionResult<Usuari>> PostEncarrec(Encarrec e)
+        public async Task<ActionResult<Encarrec>> PostEncarrec([FromBody]Encarrec e)
         {
+            int lastId = _context.Encarrecs.Select(a => a.EncarrecId).OrderByDescending(a => a).FirstOrDefault();
+            e.EncarrecId = lastId + 1;
             _context.Encarrecs.Add(e);
+            foreach(var producte in e.CodiDeBarres)
+            {
+                _context.Entry(producte).State = EntityState.Unchanged;
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetEncarrecs), new { id = e.EncarrecId }, e);

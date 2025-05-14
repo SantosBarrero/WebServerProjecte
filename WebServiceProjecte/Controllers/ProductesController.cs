@@ -71,7 +71,7 @@ namespace WebServiceProjecte.Controllers
         // DELETE: api/Productes/5
         [Route("api/Productes/{id}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteUsuari(string id)
+        public async Task<IActionResult> DeleteProd(string id)
         {
             var p = await _context.Productes.FindAsync(id);
             if (p == null)

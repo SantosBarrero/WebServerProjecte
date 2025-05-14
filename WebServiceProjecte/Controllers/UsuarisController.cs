@@ -43,7 +43,7 @@ namespace WebServiceProjecte.Controllers
         // PUT: api/Usuaris/5
         [Route("api/Usuaris/{id}")]
         [HttpPut]
-        public async Task<IActionResult> PutUsuari(int id, Usuari usuari)
+        public async Task<IActionResult> PutUsuari(int id,[FromBody] Usuari usuari)
         {
             if (id != usuari.UsuId)
             {
