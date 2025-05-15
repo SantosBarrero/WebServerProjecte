@@ -33,6 +33,12 @@ namespace WebServiceProjecte.Controllers
         {
             return await _context.Encarrecs.Where(x => x.EncarrecId == id).FirstOrDefaultAsync();
         }
+        [Route("api/Encarrecs/Usuari/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<List<Encarrec>?>> GetEncarrecUsuari(int id)
+        {
+            return await _context.Encarrecs.Where(x => x.UsuId == id).ToListAsync();
+        }
 
         // PUT: api/Encarrecs/5
         [Route("api/Encarrecs/{id}")]

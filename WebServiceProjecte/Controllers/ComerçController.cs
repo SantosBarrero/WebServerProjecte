@@ -67,7 +67,7 @@ namespace WebServiceProjecte.Controllers
         // POST: api/Comerç
         [Route("api/Comerç")]
         [HttpPost]
-        public async Task<ActionResult<Comerç>> PostUsuari(Comerç c)
+        public async Task<ActionResult<Comerç>> PostComerç([FromBody]Comerç c)
         {
             int lastId = _context.Comerçs.Select(a => a.ComerçId).OrderByDescending(a => a).FirstOrDefault();
             c.ComerçId = lastId + 1;
