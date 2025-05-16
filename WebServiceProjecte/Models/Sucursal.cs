@@ -15,8 +15,7 @@ public partial class Sucursal
 
     public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
 
+    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+
     public virtual ICollection<Usuari> Usuaris { get; set; } = new List<Usuari>();
-
-
-    public virtual ICollection<Producte> CodiDeBarres { get; set; } = new List<Producte>();
 }

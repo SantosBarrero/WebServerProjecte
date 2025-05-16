@@ -25,6 +25,12 @@ namespace WebServiceProjecte.Controllers
         {
             return await _context.Productes.OrderBy(x => x.Nom).ToListAsync();
         }
+        [Route("api/Productes/{codi}")]
+        [HttpGet]
+        public async Task<ActionResult<Producte?>> GetProducte(string codi)
+        {
+            return await _context.Productes.Where(p => p.CodiDeBarres == codi).FirstOrDefaultAsync();
+        }
 
         // PUT: api/Productes/5
         [Route("api/Productes/{id}")]

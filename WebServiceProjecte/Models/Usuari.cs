@@ -23,6 +23,5 @@ public partial class Usuari
 
     public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
 
-    public virtual Sucursal? Sucursal{ get; set; }
-    
+    public virtual Sucursal? Sucursal { get; set; }
 }

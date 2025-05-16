@@ -34,6 +34,13 @@ namespace WebServiceProjecte.Controllers
             return await _context.Sucursals.Where(x => x.SucursalId == id).FirstOrDefaultAsync();
         }
 
+        [Route("api/Sucursals/Comerç/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<List<Sucursal>>> GetSucursalsComerç(int id)
+        {
+            return await _context.Sucursals.Where(x=>x.ComerçId == id).OrderBy(x => x.SucursalId).ToListAsync();
+        }
+
         // PUT: api/Sucursals/5
         [Route("api/Sucursals/{id}")]
         [HttpPut]
@@ -68,7 +75,7 @@ namespace WebServiceProjecte.Controllers
         // POST: api/Sucursals
         [Route("api/Sucursals")]
         [HttpPost]
-        public async Task<ActionResult<Sucursal>> PostSucursal(Sucursal s)
+        public async Task<ActionResult<Sucursal>> PostSucursal([FromBody]Sucursal s)
         {
             int lastId = _context.Sucursals.Select(a => a.SucursalId).OrderByDescending(a => a).FirstOrDefault();
             s.SucursalId = lastId + 1;

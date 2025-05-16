@@ -15,7 +15,7 @@ public partial class Encarrec
 
     public string? Estat { get; set; }
 
-    public int? SucursalId { get; set; }    
+    public int? SucursalId { get; set; }
 
     public int? UsuId { get; set; }
 

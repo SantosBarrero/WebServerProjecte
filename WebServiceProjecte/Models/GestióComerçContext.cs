@@ -21,6 +21,8 @@ public partial class GestióComerçContext : DbContext
 
     public virtual DbSet<Producte> Productes { get; set; }
 
+    public virtual DbSet<Stock> Stocks { get; set; }
+
     public virtual DbSet<Sucursal> Sucursals { get; set; }
 
     public virtual DbSet<Usuari> Usuaris { get; set; }
@@ -113,26 +115,28 @@ public partial class GestióComerçContext : DbContext
                             .HasMaxLength(50)
                             .IsUnicode(false);
                     });
+        });
 
-            entity.HasMany(d => d.Sucursals).WithMany(p => p.CodiDeBarres)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Stock",
-                    r => r.HasOne<Sucursal>().WithMany()
-                        .HasForeignKey("SucursalId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Stock__Sucursal__47DBAE45"),
-                    l => l.HasOne<Producte>().WithMany()
-                        .HasForeignKey("CodiDeBarres")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Stock__CodiDeBar__46E78A0C"),
-                    j =>
-                    {
-                        j.HasKey("CodiDeBarres", "SucursalId").HasName("PK__Stock__9826A85F5826F24B");
-                        j.ToTable("Stock");
-                        j.IndexerProperty<string>("CodiDeBarres")
-                            .HasMaxLength(50)
-                            .IsUnicode(false);
-                    });
+        modelBuilder.Entity<Stock>(entity =>
+        {
+            entity.HasKey(e => new { e.CodiDeBarres, e.SucursalId }).HasName("PK__Stock__9826A85F5826F24B");
+
+            entity.ToTable("Stock");
+
+            entity.Property(e => e.CodiDeBarres)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Stock1).HasColumnName("stock");
+
+            entity.HasOne(d => d.CodiDeBarresNavigation).WithMany(p => p.Stocks)
+                .HasForeignKey(d => d.CodiDeBarres)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Stock__CodiDeBar__46E78A0C");
+
+            entity.HasOne(d => d.Sucursal).WithMany(p => p.Stocks)
+                .HasForeignKey(d => d.SucursalId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Stock__SucursalI__47DBAE45");
         });
 
         modelBuilder.Entity<Sucursal>(entity =>
@@ -148,12 +152,12 @@ public partial class GestióComerçContext : DbContext
 
             entity.HasOne(d => d.Comerç).WithMany(p => p.Sucursals)
                 .HasForeignKey(d => d.ComerçId)
-                .HasConstraintName("FK__Sucursal__Comer__398D8EEE");
+                .HasConstraintName("FK__Sucursal__Comerç__398D8EEE");
         });
 
         modelBuilder.Entity<Usuari>(entity =>
         {
-            entity.HasKey(e => e.UsuId).HasName("PK__Usuari__685263830FFAD44D");
+            entity.HasKey(e => e.UsuId).HasName("PK__Usuari__68526383FF728BCA");
 
             entity.ToTable("Usuari");
 
@@ -179,6 +183,7 @@ public partial class GestióComerçContext : DbContext
                 .HasForeignKey(d => d.SucursalId)
                 .HasConstraintName("FK__Usuari__Sucursal__3C69FB99");
         });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

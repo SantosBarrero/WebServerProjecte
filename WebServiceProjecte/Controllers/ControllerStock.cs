@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using WebServiceProjecte.Models;
 
 namespace WebServiceProjecte.Controllers
@@ -16,20 +17,22 @@ namespace WebServiceProjecte.Controllers
 
         [Route("api/Stock/Sucur/{id}")]
         [HttpGet]
-        public async Task<ActionResult<ICollection<Producte>>> GetStockSucursal(int id)
+        public async Task<ActionResult<List<Stock>>> GetStockSucursal(int id)
         {
-            var sucursal = _context.Sucursals.Where(s => s.SucursalId == id).FirstOrDefault();
-            return await _context.Productes.Where(p => p.Sucursals.Contains(sucursal)).ToListAsync();
+
+            return await _context.Stocks.Where(s => s.SucursalId == id).ToListAsync();
         }
 
         [Route("api/Stock/Sucur")]
         [HttpPost]
-        public async void PutStockSucursal(string codiBarres, int sucurId)
+        public async void PutStockSucursal(string codiBarres, int sucurId, int stock)
         {
-            var sucursal = _context.Sucursals.Where(s => s.SucursalId == sucurId).FirstOrDefault();
-            var producte = _context.Productes.Where(p => p.CodiDeBarres == codiBarres).FirstOrDefault();
-            producte.Sucursals.Add(sucursal);
-            _context.Productes.Update(producte);
+
+            Stock s = new Stock();
+            s.SucursalId = sucurId;
+            s.CodiDeBarres = codiBarres;
+            s.Stock1 = stock;
+            _context.Stocks.Add(s);
             _context.SaveChanges();
 
         }
