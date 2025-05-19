@@ -25,16 +25,19 @@ namespace WebServiceProjecte.Controllers
 
         [Route("api/Stock/Sucur")]
         [HttpPost]
-        public async void PutStockSucursal(string codiBarres, int sucurId, int stock)
+        public async void PostStockSucursal([FromBody]Stock s)
         {
 
-            Stock s = new Stock();
-            s.SucursalId = sucurId;
-            s.CodiDeBarres = codiBarres;
-            s.Stock1 = stock;
-            _context.Stocks.Add(s);
+            await _context.Stocks.AddAsync(s);
             _context.SaveChanges();
 
+        }
+        [Route("api/Stock/Sucur")]
+        [HttpPut]
+        public async void PutStockSucursal([FromBody]Stock s)
+        {
+            _context.Stocks.Update(s);
+            _context.SaveChanges();
         }
     }
 }

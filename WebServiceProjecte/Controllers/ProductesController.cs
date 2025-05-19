@@ -35,7 +35,7 @@ namespace WebServiceProjecte.Controllers
         // PUT: api/Productes/5
         [Route("api/Productes/{id}")]
         [HttpPut]
-        public async Task<IActionResult> PutProd(string id, Producte p)
+        public async Task<IActionResult> PutProd(string id, [FromBody]Producte p)
         {
             if (id != p.CodiDeBarres)
             {
