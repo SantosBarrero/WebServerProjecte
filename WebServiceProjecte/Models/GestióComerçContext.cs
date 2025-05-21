@@ -21,6 +21,8 @@ public partial class GestióComerçContext : DbContext
 
     public virtual DbSet<Producte> Productes { get; set; }
 
+    public virtual DbSet<ProducteEncarrec> ProducteEncarrecs { get; set; }
+
     public virtual DbSet<Stock> Stocks { get; set; }
 
     public virtual DbSet<Sucursal> Sucursals { get; set; }
@@ -95,26 +97,27 @@ public partial class GestióComerçContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.Preu).HasColumnType("decimal(10, 2)");
+        });
 
-            entity.HasMany(d => d.Encarrecs).WithMany(p => p.CodiDeBarres)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProducteEncarrec",
-                    r => r.HasOne<Encarrec>().WithMany()
-                        .HasForeignKey("EncarrecId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ProducteE__Encar__4BAC3F29"),
-                    l => l.HasOne<Producte>().WithMany()
-                        .HasForeignKey("CodiDeBarres")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ProducteE__CodiD__4AB81AF0"),
-                    j =>
-                    {
-                        j.HasKey("CodiDeBarres", "EncarrecId").HasName("PK__Producte__70682C70046F06AB");
-                        j.ToTable("ProducteEncarrec");
-                        j.IndexerProperty<string>("CodiDeBarres")
-                            .HasMaxLength(50)
-                            .IsUnicode(false);
-                    });
+        modelBuilder.Entity<ProducteEncarrec>(entity =>
+        {
+            entity.HasKey(e => new { e.CodiDeBarres, e.EncarrecId }).HasName("PK__Producte__70682C70046F06AB");
+
+            entity.ToTable("ProducteEncarrec");
+
+            entity.Property(e => e.CodiDeBarres)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.CodiDeBarresNavigation).WithMany(p => p.ProducteEncarrecs)
+                .HasForeignKey(d => d.CodiDeBarres)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProducteE__CodiD__4AB81AF0");
+
+            entity.HasOne(d => d.Encarrec).WithMany(p => p.ProducteEncarrecs)
+                .HasForeignKey(d => d.EncarrecId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProducteE__Encar__4BAC3F29");
         });
 
         modelBuilder.Entity<Stock>(entity =>

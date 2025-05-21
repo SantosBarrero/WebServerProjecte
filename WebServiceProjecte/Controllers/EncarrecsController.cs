@@ -39,7 +39,12 @@ namespace WebServiceProjecte.Controllers
         {
             return await _context.Encarrecs.Where(x => x.UsuId == id).ToListAsync();
         }
-
+        [Route("api/Encarrecs/Sucursal/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<List<Encarrec>?>> GetEncarrecSucursal(int id)
+        {
+            return await _context.Encarrecs.Where(x => x.SucursalId == id).ToListAsync();
+        }
         // PUT: api/Encarrecs/5
         [Route("api/Encarrecs/{id}")]
         [HttpPut]
@@ -79,10 +84,6 @@ namespace WebServiceProjecte.Controllers
             int lastId = _context.Encarrecs.Select(a => a.EncarrecId).OrderByDescending(a => a).FirstOrDefault();
             e.EncarrecId = lastId + 1;
             _context.Encarrecs.Add(e);
-            foreach(var producte in e.CodiDeBarres)
-            {
-                _context.Entry(producte).State = EntityState.Unchanged;
-            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetEncarrecs), new { id = e.EncarrecId }, e);

@@ -14,10 +14,29 @@ namespace WebServiceProjecte.Controllers
         }
         [Route("api/ProducteEncarrec/{id}")]
         [HttpGet]
-        public async Task<ActionResult<ICollection<Producte>>> GetProductesEncarrec(int id)
+        public async Task<ActionResult<ICollection<ProducteEncarrec>>> GetProductesEncarrec(int id)
         {
-            var encarrec = _context.Encarrecs.Where(e => e.EncarrecId == id).FirstOrDefault();
-            return await _context.Productes.Where(p => p.Encarrecs.Contains(encarrec)).ToListAsync();
+            return await _context.ProducteEncarrecs.Where(x=>x.EncarrecId == id).ToListAsync();
+        }
+        [Route("api/ProducteEncarrec/Productes/{id}")]
+        [HttpGet]
+        public async Task<ActionResult<List<Producte>>> GetProductes(int id)
+        {
+            List<string> productes = _context.ProducteEncarrecs.Where(x => x.EncarrecId == id).Select(x => x.CodiDeBarres).ToList();
+            return await _context.Productes.Where(p => productes.Contains(p.CodiDeBarres)).ToListAsync();
+        }
+        [Route ("api/ProducteEncarrec")]
+        [HttpPost]
+        public async Task PostProducteEncarrec([FromBody] ProducteEncarrec pe)
+        {
+            _context.ProducteEncarrecs.Add(pe);
+            await _context.SaveChangesAsync();
+        }
+        [Route ("api/ProducteEncarrec/{id}")]
+        [HttpDelete]
+        public async Task DeleteProducteEncarrec(int id)
+        {
+            await _context.ProducteEncarrecs.Where(x => x.EncarrecId == id).ExecuteDeleteAsync();
         }
     }
 }

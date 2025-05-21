@@ -66,12 +66,20 @@ namespace WebServiceProjecte.Controllers
         // POST: api/Productes
         [Route("api/Productes")]
         [HttpPost]
-        public async Task<ActionResult<Producte>> PostProd(Producte p)
+        public async Task<ActionResult<Producte?>> PostProd([FromBody]Producte p)
         {
-            _context.Productes.Add(p);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Productes.Add(p);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProd), new { id = p.CodiDeBarres }, p);
+                return CreatedAtAction(nameof(GetProd), new { id = p.CodiDeBarres }, p);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, $"Internal Server Error: {e.Message} \n {e.InnerException}");
+            }
+            
         }
 
         // DELETE: api/Productes/5

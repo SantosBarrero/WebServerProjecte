@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 using WebServiceProjecte.Models;
 
 namespace WebServiceProjecte.Controllers
@@ -23,21 +24,41 @@ namespace WebServiceProjecte.Controllers
             return await _context.Stocks.Where(s => s.SucursalId == id).ToListAsync();
         }
 
-        [Route("api/Stock/Sucur")]
+        [Route("api/Stock")]
         [HttpPost]
-        public async void PostStockSucursal([FromBody]Stock s)
+        public async Task<ActionResult> PostStockSucursal([FromBody]Stock s)
         {
-
-            await _context.Stocks.AddAsync(s);
-            _context.SaveChanges();
+            try
+            {
+                await _context.Stocks.AddAsync(s);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, $"Internal Server Error: {e.Message}");
+            }
+            
 
         }
-        [Route("api/Stock/Sucur")]
+        [Route("api/Stock")]
         [HttpPut]
         public async void PutStockSucursal([FromBody]Stock s)
         {
             _context.Stocks.Update(s);
             _context.SaveChanges();
         }
+        [Route("api/Stock/CodiDeBarres={codi}&SucursalId={id}")]
+        [HttpDelete]
+        public async Task<ActionResult> DelStock(string codi, int id)
+        {
+            Debug.WriteLine(codi);
+            Debug.WriteLine(id);
+            Stock s = _context.Stocks.Where(x => x.SucursalId == id && x.CodiDeBarres == codi).First();
+            _context.Stocks.Remove(s);
+            _context.SaveChanges();
+            return Ok();
+        }
+
     }
 }

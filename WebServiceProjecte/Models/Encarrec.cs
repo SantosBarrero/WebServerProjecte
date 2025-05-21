@@ -19,9 +19,9 @@ public partial class Encarrec
 
     public int? UsuId { get; set; }
 
+    public virtual ICollection<ProducteEncarrec> ProducteEncarrecs { get; set; } = new List<ProducteEncarrec>();
+
     public virtual Sucursal? Sucursal { get; set; }
 
     public virtual Usuari? Usu { get; set; }
-
-    public virtual ICollection<Producte> CodiDeBarres { get; set; } = new List<Producte>();
 }

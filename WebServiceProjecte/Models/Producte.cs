@@ -17,7 +17,7 @@ public partial class Producte
 
     public string? Categoria { get; set; }
 
-    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+    public virtual ICollection<ProducteEncarrec> ProducteEncarrecs { get; set; } = new List<ProducteEncarrec>();
 
-    public virtual ICollection<Encarrec> Encarrecs { get; set; } = new List<Encarrec>();
+    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }
